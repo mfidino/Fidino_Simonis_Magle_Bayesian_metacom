@@ -202,7 +202,7 @@ quantile(rmse30, probs = c(0.025, 0.5, 0.975))
 
 # function to simulate jmat with daily probabilities
 
-sim_jmat <- function(nrep = 28, nsite = 80, nyear = 6, nspecies = 3){
+sim_jmat <- function(nrep = 28, nsite = 80, nyear = 6, nspec = 3){
     days_array <- array(0, dim = c(nrep, nsite, nyear))
     # the hard coded probability that a camera was active that day
     # calculated from our own data. 
@@ -242,7 +242,8 @@ sim_jmat <- function(nrep = 28, nsite = 80, nyear = 6, nspecies = 3){
     
 }
 
-
+# do a test simulation
+test <- sim_jmat()
 
 
 
