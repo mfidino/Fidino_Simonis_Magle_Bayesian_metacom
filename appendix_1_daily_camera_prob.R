@@ -1,5 +1,6 @@
 ##########################################################
 #
+# Appendix 1.
 # Code to determine the daily probability that a camera trap is active
 # from the urban biodiversity monitoring project
 #
@@ -195,7 +196,7 @@ quantile(rmse30, probs = c(0.025, 0.5, 0.975))
 # rmse 30 fits much better
 
 ###################################
-# step 3. simulate j matrix
+### step 3. simulate j matrix
 ###################################
 
 
