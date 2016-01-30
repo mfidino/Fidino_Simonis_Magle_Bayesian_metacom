@@ -129,7 +129,26 @@ daily_prob <- apply(big_matrix, 2, mean)
 
 # get number of days each camera trap was active and summarize it
 n_days <- table(apply(big_matrix, 1, sum))
+ack <- apply(big_matrix, 1, sum)
 
+library(ggplot2)
+
+
+fig_1 <- ggplot(data.frame(ack), aes(x = ack))+
+  geom_histogram(color = "black", fill = "gray50")+
+  xlab("Number of days a camera trap was active")+
+  ylab("Count")+
+  theme_bw()+
+theme(axis.line = element_line(colour = "black"),
+    #panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank(),
+    text = element_text(size = 12, color = "black"),
+    axis.ticks = element_line(color = "black"))
+
+ggsave("../../GitHub/Fidino_Simonis_Magle_Bayesian_metacom/app_a_fig_1.tiff",
+       fig_1, height = 4, width = 4, dpi = 175)
 # pull 803 random draws at the daily probabilities (get_count), do this 1000 times
 
 
@@ -192,6 +211,53 @@ for(i in 1:length(draw30_contingency)){
 quantile(rmse28, probs = c(0.025, 0.5, 0.975))
 
 quantile(rmse30, probs = c(0.025, 0.5, 0.975))
+
+
+fit_draw <- matrix(0, ncol = 29, nrow = 1000)
+
+for(i in 1:nrow(fit_draw)){
+
+  
+  # add simulated data to predicted
+  fit_draw[i,as.numeric(names(draw28_contingency[[i]]))+1] <- as.numeric(draw28_contingency[[i]])
+
+  
+}
+
+fit_30 <- data.frame(t(apply(fit_draw, 2, quantile, probs = c(0.025, 0.5, 0.975))))
+colnames(fit_30) <- c("low", "pred", "high")
+fit_30$x <- 0:28
+fit_30$observed <- t(observed)
+
+
+
+fig_2 <- ggplot(fit_30, aes(x = x, y = pred))+
+  geom_line(size = 1.5, color = "gray30")+
+  geom_line(aes(x = x, y = high), linetype = "dashed")+
+  geom_line(aes(x = x, y = low), linetype = "dashed")+
+  geom_point(aes(y = observed), size = 1.5)+
+  theme_bw()+
+  scale_x_continuous(breaks = seq(0, 30,5))+
+  xlab("")+
+  ylab("Count")+
+  ggtitle("(A)")+
+  theme(axis.line = element_line(colour = "black"),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        text = element_text(size = 12, color = "black"),
+        axis.ticks = element_line(color = "black"),
+        plot.title = element_text(hjust = 0))
+tiff("../../GitHub/Fidino_Simonis_Magle_Bayesian_metacom/app_a_fig_4.tiff",
+     width = 4, height = 4, res = 175, units = "in")
+multiplot(fig_2, fig_3)
+dev.off()
+ggsave("../../GitHub/Fidino_Simonis_Magle_Bayesian_metacom/app_a_fig_4.tiff",
+       final_plot, height = 4, width = 4, dpi = 175)
+  scale_shape_discrete
+  
+
 
 # rmse 30 fits much better
 
